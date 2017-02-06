@@ -4,8 +4,8 @@
   "main": "app.js",
   "private": true,
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server --hot --inline"
+    "start": "node ./bin/www",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

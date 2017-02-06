@@ -8,7 +8,7 @@ body {
 #map {
   width: 100%;
   float: right;
-  height: 100%;
+  height: calc(100% - 65px);
   z-index: 1;
 }
 
@@ -26,9 +26,6 @@ body {
 
 header {
   padding: 0 50px;
-}
-#origin-input {
-  margin-left: 485px;
 }
 
 #destination-input {
@@ -209,7 +206,6 @@ header {
   font-weight: 100;
   color: rgba(255, 255, 255, 0.85);
   position: absolute;
-  bottom: 0;
   margin-left: 16px;
   top: 1.48rem;
 }
@@ -219,3 +215,20 @@ header {
 .orange {color: #FF9800;}
 
 .yello {color: #FFEB3B}
+
+.search-bar {
+  display: inline-block;
+  float: right;
+}
+
+.col-md-3 {
+  display: inline-block;
+  width: 25%;
+  height: 100%;
+}
+
+.col-md-9 {
+  display: inline-block;
+  width: 75%;
+  height: 100%;
+}

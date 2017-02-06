@@ -7,7 +7,7 @@ import loadGoogleMapsAPI from 'load-google-maps-api';
 let opt = {
     key: "AIzaSyALJXJGHtsniEtVTbzDj3H6j6hQUKV2cvA",
     language: "en",
-    libraries: "visualization, places"
+    libraries: ["visualization", "places"]
 }
 
 
@@ -26,7 +26,11 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         zoom: 13
     });
-
+    var originInput = document.getElementById('#origin-input');
+    var destInput = document.getElementById('#destination-input');
+    //var searchBox = new google.maps.places.searchBox(originInput);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destInput);
     var heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
         map: map
@@ -60,15 +64,11 @@ function initMap() {
     directionsDisplay.setMap(map);
     var origin_input = document.getElementById('origin-input');
     var destination_input = document.getElementById('destination-input');
-    var modes = document.getElementById('mode-selector');
 
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
     var origin_autocomplete = new google.maps.places.Autocomplete(origin_input);
+    var destination_autocomplete = new google.maps.places.Autocomplete(destination_input);
+
     origin_autocomplete.bindTo('bounds', map);
-    var destination_autocomplete =
-        new google.maps.places.Autocomplete(destination_input);
     destination_autocomplete.bindTo('bounds', map);
     // Sets a listener on a radio button to change the filter type on Places
     // Autocomplete.
