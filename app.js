@@ -16,13 +16,6 @@ const port = isDeveloping ? 8080 : process.env.PORT;
 const app = express();
 
 let APIKey = 'AIzaSyAE6o3bNueg57_Ij5oK3oTqd40R0nac5No';
-let a = {
-      uri: 'https://maps.googleapis.com/maps/api/directions/json?',
-      qs: {
-        origin:`place_id:ChIJDWQUKbXSJIgRE4GK31hWlms`, destination: `place_id:ChIJdR3LEAHKJIgR0sS5NU6Gdlc`,
-        language: 'en', mode: 'walking', alternatives: true, key: APIKey
-      }
-    };
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
