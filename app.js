@@ -39,7 +39,7 @@ if(isDeveloping) {
   });
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
-  
+
   app.get('/', function response(req, res) {
     res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
     res.end();
@@ -47,6 +47,8 @@ if(isDeveloping) {
 
   app.post('/danger', function response(req, res) {
     let placeId = req.body.data;
+    console.log("I GOT THIS SHIT!");
+
     let option = {
       uri: 'https://maps.googleapis.com/maps/api/directions/json?',
       qs: {
@@ -57,7 +59,8 @@ if(isDeveloping) {
     rp(option)
       .then(function(json) {
         console.log(json);
-        res.json({ data: dangerTest(JSON.parse(json), riskGrid)});
+        let dangerRate = dangerTest(JSON.parse(json), riskGrid)
+        res.json({ data: [dangerRate, JSON.parse(json)]});
       })
       .catch(function(err) {
         console.error("Failed to get JSON from Google API", err);
