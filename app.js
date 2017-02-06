@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 if(isDeveloping) {
-  console.log("NO");
+  console.log("[!] This is not for production");
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
     PublicPath: config.output.publicPath,
@@ -98,39 +98,6 @@ if(isDeveloping) {
       })
 });
 }
-
-
-/*
-app.get('/getGeo/:start/:dest', function(req, res) {
-  let baseAPIUrl = 'https://maps.googleapis.com/maps/api/directions/json?';
-  let apiKEY = "&language=en&mode=walking&alternatives=true&key=AIzaSyAE6o3bNueg57_Ij5oK3oTqd40R0nac5No";
-  let start = `origin=place_id:${req.params('start')}`;
-  let dest = `&destination=place_id:${req.parm('dest')}`;
-  console.log(baseAPIUrl+start+dest+apiKEY);
-
-  let option = {
-    method: 'GET',
-    uri: baseAPIUrl+start+dest+apiKEY,
-    json: true
-  };
-
-  rp(option)
-    .then(function(parsedJson) {
-      res.send(parsedJson);
-    })
-    .catch(function(err) {
-      console.error(err);
-    })
-});*/
-
-/*
-app.post('/danger', function(req, res){
-  //calcalute using ur functions
-  //Take json response from google (data)
-  //Calc function and then return array of safety
-  res.json({ data: dangerTest(JSON.parse(req.body.data), riskGrid)});
-});
-*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
