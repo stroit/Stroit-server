@@ -19,7 +19,8 @@ module.exports = {
             'jQuery': 'jquery',
         }),
         new HtmlWebpackPlugin({ 
-            template: './views/index.jade'
+            template: './views/index.jade',
+            inject: 'body'
         }),
         new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
@@ -31,7 +32,8 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.css$/, loader: "style-loader!css-loader" },
-            { test: /\.jade$/, loader: "pug-loader"}
+            { test: /\.jade$/, loader: "pug-loader"},
+            { test: /\.js$/, loader: "babel-loader", query: {presets: ['es2015']}}
         ]
     },
     devServer: {
