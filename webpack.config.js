@@ -1,23 +1,17 @@
 const webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-    entry: ['webpack/hot/dev-server',"./public/entry.js"],
+    devtool: 'eval-source-map',
+    entry: [
+        'webpack-hot-middleware/client?reload=true',
+        "./public/entry.js"
+    ],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: "bundle-[hash].js",
         publicPath: path.resolve(__dirname, '/')
-    },
-    devServer: {
-        hot: true,
-        inline: true
-    },
-    module: {
-        loaders: [
-            { test: /\.css$/, loader: "style-loader!css-loader" },
-            { test: /\.jade$/, loader: "pug-loader"}
-        ]
     },
     plugins: [
         new webpack.ProvidePlugin({
@@ -26,8 +20,20 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({ 
             template: './views/index.jade'
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
         })
     ],
+    module: {
+        loaders: [
+            { test: /\.css$/, loader: "style-loader!css-loader" },
+            { test: /\.jade$/, loader: "pug-loader"}
+        ]
+    },
     devServer: {
         historyApiFallback: true
     }

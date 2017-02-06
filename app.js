@@ -1,39 +1,107 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var fs = require('fs');
-var readline = require('readline');
+const express = require('express');
+const path = require('path');
 const rp = require('request-promise');
+const webpack = require('webpack');
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const config = require('./webpack.config.js');
+const populateRisk = require('./lib/riskGrid');
+const dangerTest = require('./lib/dangerTest');
+const routes = require('./routes/index');
+const riskGrid = populateRisk('result.txt');
+const bodyParser = require('body-parser');
+const qs = require('querystring');
+const isDeveloping = process.env.NODE_ENV !== 'production';
+const port = isDeveloping ? 8080 : process.env.PORT;
+const app = express();
 
-var populateRisk = require('./lib/riskGrid');
-var dangerTest = require('./lib/dangerTest');
-//var routes = require('./routes/index');
+let APIKey = 'AIzaSyAE6o3bNueg57_Ij5oK3oTqd40R0nac5No';
+let a = {
+      uri: 'https://maps.googleapis.com/maps/api/directions/json?',
+      qs: {
+        origin:`place_id:ChIJDWQUKbXSJIgRE4GK31hWlms`, destination: `place_id:ChIJdR3LEAHKJIgR0sS5NU6Gdlc`,
+        language: 'en', mode: 'walking', alternatives: true, key: APIKey
+      }
+    };
 
-var app = express();
-
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-// var riskGrid = populateRisk('result.txt');
-app.use(require('body-parser').json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
-app.use('/', function(req, res) {
-  res.render('/dist/index.html');
+if(isDeveloping) {
+  console.log("NO");
+  const compiler = webpack(config);
+  const middleware = webpackMiddleware(compiler, {
+    PublicPath: config.output.publicPath,
+    contentBase: 'src',
+    stats: {
+      colors: true,
+      has: false,
+      timings: true,
+      chunks: false,
+      chunkModules: false,
+      modules: false
+    }
+  });
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+  
+  app.get('/', function response(req, res) {
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'dist/index.html')));
+    res.end();
+  });
+
+  app.post('/danger', function response(req, res) {
+    let placeId = req.body.data;
+    let option = {
+      uri: 'https://maps.googleapis.com/maps/api/directions/json?',
+      qs: {
+        origin:`place_id:${placeId[0]}`, destination: `place_id:${placeId[1]}`,
+        language: 'en', mode: 'walking', alternatives: true, key: APIKey
+      }
+    };
+    rp(option)
+      .then(function(json) {
+        console.log(json);
+        res.json({ data: dangerTest(JSON.parse(json), riskGrid)});
+      })
+      .catch(function(err) {
+        console.error("Failed to get JSON from Google API", err);
+      })
 });
 
+} else {
+  console.log("YES");
+  app.use(express.static(__dirname + '/dist'));
+  app.get('/', function response(req, res) {
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
+  });
+
+  app.post('/danger', function response(req, res) {
+    let placeId = req.body.data;
+    let option = {
+      uri: 'https://maps.googleapis.com/maps/api/directions/json?',
+      qs: {
+        origin:`place_id:${placeId[0]}`, destination: `place_id:${placeId[1]}`,
+        language: 'en', mode: 'walking', alternatives: true, key: APIKey
+      },
+      json: true
+    };
+
+    rp(options)
+      .then(function(json) {
+        res.json({ data: dangerTest(json), riskGrid});
+      })
+      .catch(function(err) {
+        console.error("Failed to get JSON from Google API", err);
+      })
+});
+}
+
+
+/*
 app.get('/getGeo/:start/:dest', function(req, res) {
-  console.log("\n\n\n\n\n\n\\n\n\n\n\n\n\n\\n\\fasdfafdf\n\n\nn\\nn");
   let baseAPIUrl = 'https://maps.googleapis.com/maps/api/directions/json?';
   let apiKEY = "&language=en&mode=walking&alternatives=true&key=AIzaSyAE6o3bNueg57_Ij5oK3oTqd40R0nac5No";
   let start = `origin=place_id:${req.params('start')}`;
@@ -53,7 +121,7 @@ app.get('/getGeo/:start/:dest', function(req, res) {
     .catch(function(err) {
       console.error(err);
     })
-});
+});*/
 
 /*
 app.post('/danger', function(req, res){
@@ -89,7 +157,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.status('error', {
     message: err.message,
     error: {}
   });

@@ -1,5 +1,4 @@
 var placeId = [];
-var baseAPIUrl = 'https://maps.googleapis.com/maps/api/directions/json?';
 var directionsDisplay;
 var displayPath;
 
@@ -13,7 +12,7 @@ function initMap() {
       lat: 42.331447,
       lng: -83.047632
     },
-    mapTypeId: 'satellite',
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
     zoom: 13
   });
 
@@ -104,44 +103,19 @@ function initMap() {
       $('header').after($("<div id='panel'></div>"));
       $('#panel').animateCss('fadeIn');
     }
-      $.ajax({
-        url: baseAPIUrl += "origin=place_id:" + placeId[0] + "&destination=place_id:" + placeId[1] + "&language=en&mode=walking&alternatives=true&key=AIzaSyAE6o3bNueg57_Ij5oK3oTqd40R0nac5No",
-        type: "GET",
-        dataType: "json",
-        success: function(data) {
-          $.ajax({
-            url: '/danger',
-            type: "POST",
-            data: {data: JSON.stringify(data)},
-            dataType: "json",
-            success: function(data) {
-              var total = 0;
-              for(var i=0; i<data.data.length; i++) {
-                total += data.data[i];
-              }
-              $('.way-wrapper').each(function(i) {
-                $(this).append($('<div class="danger"><h1 class="hehe">Danger</h1><span class="dangerRate">'+Math.floor(data.data[i]/total*100)+'%</span></div>'));
-                var num = $('.dangerRate').text().replace("%", "");
-                if(parseInt(num) >= 70) {
-                  if(i == 0) $('.dangerRate').first().addClass('red');
-                  else if(i == 1) $('.dangerRate').last().addClass('red');
-                }
-              })
-              $('.dangerRate').addClass('red');
-            }
-          })
-            var via = [];
-            var dur = [];
 
-            for(var i=0; i<data.routes.length; i++){
-              via.push(data.routes[i].summary);
-              dur.push(data.routes[i].legs[0].duration.text);
-              $('#panel').append($('<div class="way-wrapper" onclick="please($(this).index())"><div class="way_info"><h1 class="way_via">via '+via[i]+'</h1>'+'<h1 class="way_min">'+dur[i]+'</h1></div></div>'));
-            }
-        }
-      })
+    $.post('/danger', {data: placeId})
+        .done(function(data) {
+          console.log(data);
+        })
+        .fail(function(xhr, status, err) {
+          console.log(err);
+        })
+        .always(function() {
+          console.log("start!");
+        })
 
-	
+
     displayPath = [];
     route(origin_place_id, destination_place_id, travel_mode,
       directionsService, directionsDisplay, displayPath);
