@@ -118,7 +118,28 @@ function initMap() {
 
         $.post('/danger', {data: placeId})
             .done(function (data) {
-                console.log(data);
+                console.log("Thisisdata",data);
+                var total = 0;
+                for (var i = 0; i < data.data.length; i++) {
+                    total += data.data[i];
+                }
+                $('.way-wrapper').each(function(i) {
+                    $(this).append($('<div class="danger"><h1 class="hehe">Danger</h1><span class="dangerRate">' + Math.floor(data.data[i] / total * 100) + '%</span></div>'));
+                    var num = $('.dangerRate').text().replace("%", "");
+                    if (parseInt(num) >= 70) {
+                        if (i == 0) $('.dangerRate').first().addClass('red');
+                        else if (i == 1) $('.dangerRate').last().addClass('red');
+                    }
+                })
+                $('.dangerRate').addClass('red');
+                var via = [];
+                var dur = [];
+                
+                for (var i = 0; i < data.routes.length; i++) {
+                  via.push(data.routes[i].summary);
+                  dur.push(data.routes[i].legs[0].duration.text);
+                  $('#panel').append($('<div class="way-wrapper" onclick="please($(this).index())"><div class="way_info"><h1 class="way_via">via ' + via[i] + '</h1>' + '<h1 class="way_min">' + dur[i] + '</h1></div></div>'));
+                }
             })
             .fail(function (xhr, status, err) {
                 console.log(err);
@@ -173,10 +194,7 @@ function route(origin_place_id, destination_place_id, travel_mode,
                 }); */
                 var changedResponse = jQuery.extend(true, {}, response);
                 changedResponse.routes[0] = response.routes[i];
-                //console.log(changedResponse.routes[0], response.routes[i])
                 displayPath.push(changedResponse);
-                console.log(displayPath);
-                //tempDirection.setDirections(response);
             }
             directionsDisplay.setDirections(displayPath[0]);
             $('document').on('click', '.way-wrapper', function(e) {
