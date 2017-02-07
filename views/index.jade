@@ -8,9 +8,10 @@ html
   body
     header
       .logo.col-md-3
-        h1#logo STROIT
-        div.peace| Detroit life
-      .search-bar.col-md-9
-        input#origin-input.controls(type='text', placeholder='Enter an origin location')
-        input#destination-input.controls(type='text', placeholder='Enter a destination location')
+        h1(title="sex")#logo STROIT
+        span.peace| stay safe in Detroit
+      .search-bar
+        input#origin-input.controls(type='text', onfocus="this.placeholder=''", onblur="this.placeholder='Enter a destination location'", placeholder='Enter an origin location')
+        input#destination-input.controls(type='text', onfocus="this.placeholder=''",  onblur="this.placeholder='Enter a destination location'", placeholder='Enter a destination location')
+      .clearfix
     #map

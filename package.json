@@ -29,7 +29,9 @@
     "request-promise": "^4.1.1",
     "serve-favicon": "~2.3.0",
     "style-loader": "^0.13.1",
+    "tip": "^1.1.4",
     "tls": "^0.0.1",
+    "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^1.16.2",
     "webpack-hot-middleware": "^2.16.1"

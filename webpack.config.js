@@ -18,7 +18,22 @@ module.exports = {
             '$': 'jquery',
             'jQuery': 'jquery',
         }),
-        new HtmlWebpackPlugin({ 
+        new webpack.optimize.UglifyJsPlugin({
+          comments: false,
+          compress: {
+            unused: true,
+            dead_code: true,
+            warnings: false,
+            drop_debugger: true,
+            conditionals: true,
+            evaluate: true,
+            drop_console: true,
+            sequences: true,
+            booleans: true
+          },
+          minimize: true
+        }),
+        new HtmlWebpackPlugin({
             template: './views/index.jade',
             inject: 'body'
         }),
@@ -27,16 +42,17 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
-        })
+        }),
     ],
     module: {
         loaders: [
             { test: /\.css$/, loader: "style-loader!css-loader" },
             { test: /\.jade$/, loader: "pug-loader"},
-            { test: /\.js$/, loader: "babel-loader", query: {presets: ['es2015']}}
+            { test: /\.js$/, loader: "babel-loader", query: {presets: ['es2015']}},
+            { test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader?limit=8192' },
         ]
     },
     devServer: {
         historyApiFallback: true
     }
-};  
+};

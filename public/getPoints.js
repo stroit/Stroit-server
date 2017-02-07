@@ -1,6 +1,7 @@
 function getPoints() {
 	return [
-		new google.maps.LatLng(42.3575, -83.0701),new google.maps.LatLng(42.3575, -83.0701),
+		new google.maps.LatLng(42.3575, -83.0701),
+		new google.maps.LatLng(42.3575, -83.0701),
 		new google.maps.LatLng(42.4148, -82.9171),
 		new google.maps.LatLng(42.4404, -83.0758),
 		new google.maps.LatLng(42.4312, -83.161),
@@ -707,6 +708,8 @@ new google.maps.LatLng(42.4198, -83.0137),
 new google.maps.LatLng(42.3552, -83.0499),
 new google.maps.LatLng(42.4352, -83.0226),
 new google.maps.LatLng(42.4293, -83.2462),
-new google.maps.LatLng(42.444, -83.1413)];}
+new google.maps.LatLng(42.444, -83.1413)
+];
+};
 
 window.getPoints = getPoints;

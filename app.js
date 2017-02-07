@@ -58,7 +58,6 @@ if(isDeveloping) {
     };
     rp(option)
       .then(function(json) {
-        console.log(json);
         let dangerRate = dangerTest(JSON.parse(json), riskGrid)
         res.json({ data: [dangerRate, JSON.parse(json)]});
       })
