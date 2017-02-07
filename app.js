@@ -14,9 +14,24 @@ const qs = require('querystring');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 8080 : process.env.PORT;
 const app = express();
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/stroit');
+
+var Schema = mongoose.Schema;
+var mapInfo = new Schema({
+  LAT: Number,
+  LON: Number,
+  address: String,
+  offensedescription: String,
+  published_date: { type: Date, default: Date.now }
+});
+
+var Map = mongoose.model('map', mapInfo);
+
+
 
 let APIKey = 'AIzaSyAE6o3bNueg57_Ij5oK3oTqd40R0nac5No';
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -45,6 +60,12 @@ if(isDeveloping) {
     res.end();
   });
 
+  app.get('/crime', function response(req, res) {
+    Map.find({}, function(err, data) {
+      res.json(data);
+    });
+  })
+
   app.post('/danger', function response(req, res) {
     let placeId = req.body.data;
     console.log("I GOT THIS SHIT!");
@@ -65,7 +86,6 @@ if(isDeveloping) {
         console.error("Failed to get JSON from Google API", err);
       })
 });
-
 } else {
   console.log("YES");
   app.use(express.static(__dirname + '/dist'));
