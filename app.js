@@ -68,7 +68,6 @@ if(isDeveloping) {
 
   app.post('/danger', function response(req, res) {
     let placeId = req.body.data;
-    console.log("I GOT THIS SHIT!");
 
     let option = {
       uri: 'https://maps.googleapis.com/maps/api/directions/json?',
