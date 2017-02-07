@@ -35,7 +35,7 @@ function initMap() {
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destInput);
 
         var iconBase = 'http://i.imgur.com/yeMqffk.png';
-  
+
         var marker;
         var image = {
           url: 'http://i.imgur.com/5hFICRf.png',
@@ -133,7 +133,6 @@ function initMap() {
 
 function route(origin_place_id, destination_place_id, travel_mode,
     directionsService, directionsDisplay, displayPath) {
-    console.log("trying to change the route!");
     if (isPlaceValid) console.log("I got that valid places ~!");
 
     var request = {
@@ -151,7 +150,6 @@ function route(origin_place_id, destination_place_id, travel_mode,
             for (var i = 0; i < len; i++) {
                 var changedResponse = jQuery.extend(true, {}, response);
                 changedResponse.routes[0] = response.routes[i];
-                console.log("these are routes", changedResponse.routes[0]);
                 displayPath.push(changedResponse);
             }
             directionsDisplay.setDirections(displayPath[0]);
@@ -191,7 +189,6 @@ function appendDirections(placeId) {
             data: placeId
         })
         .done(function(data) {
-            console.log("아 씨발 에이아이피 받아온다 이기야~");
             var total = 0;
             var danger = data.data[0];
             var routeInfo = data.data[1];
