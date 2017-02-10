@@ -1,6 +1,13 @@
-<p style="text-align: center">
-  <img src="http://i.imgur.com/VMQMa3d.png" width="250px" />
-</p>
+<h1 align="center">
+  <br>
+  <a href="https://stroit.life"><img src="http://i.imgur.com/VMQMa3d.png" alt="stroit" width="200"></a>
+  <br>
+  STROIT
+  <br>
+  <br>
+</h1>
+
+
 
 ##Inspiration
 Our idea started at MHacks 8 where, despite all odds, our members from University of Waterloo and Plainwell High School met and teamed up to create a simple, functional product that helped users find the safest route from one place in Detroit to another. Filled with bugs and weird performance issues, our team decided to continue the project and over 2 months, we finally developed our finished project - stroit.life.
