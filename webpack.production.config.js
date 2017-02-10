@@ -1,13 +1,11 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const StatsPlugin = require('stats-webpack-plugin');
 
 module.exports = {
-    devtool: 'eval-source-map',
-    entry: [
-        'webpack-hot-middleware/client?reload=true',
-        "./public/entry.js"
-    ],
+    entry: ["./public/entry.js"],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: "bundle-[hash].js",
@@ -18,6 +16,15 @@ module.exports = {
             '$': 'jquery',
             'jQuery': 'jquery',
         }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new ExtractTextPlugin('[name]-[hash].min.css'),
+        new StatsPlugin('webpack.stats.json', {
+	        source: false,
+	        modules: false
+	    }),
+	    new webpack.DefinePlugin({
+		    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+		}),
         new webpack.optimize.UglifyJsPlugin({
           comments: false,
           compress: {
@@ -37,22 +44,16 @@ module.exports = {
             template: './views/index.jade',
             inject: 'body'
         }),
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': 'development'
+            'process.env.NODE_ENV': 'production'
         }),
     ],
-    module: {
+    module: {   
         loaders: [
-            { test: /\.css$/, loader: "style-loader!css-loader" },
+	        { test: /\.css$/, loader: ExtractTextPlugin.extract({fallback: "style-loader", use: "css-loader"})},
             { test: /\.jade$/, loader: "pug-loader"},
             { test: /\.js$/, loader: "babel-loader", query: {presets: ['es2015']}},
-            { test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader?limit=8192' },
+            { test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader' },
         ]
-    },
-    devServer: {
-        historyApiFallback: true
     }
-};
+ };

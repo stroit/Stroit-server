@@ -6,14 +6,11 @@ body {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-#wrapper {
-	height: calc(100% - 65px);
-}
 
 #map {
   width: 100%;
   float: right;
-  height: 100%;
+  height: calc(100% - 65px);
   z-index: 1;
 }
 
@@ -261,48 +258,3 @@ header {
   display: inline-block;
   height: 100%;
 }
-
-.icn {
-  height: 45px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.img-wrapper {
-	display: inline-block;
-	height: 100%;
-	vertical-align: middle;
-}
-
-.github-corner {
-	position: absolute; 
-	bottom: 0; 
-	left: 0; 
-	z-index: 99;
-}
-
-#wrapper {
-	position: relative;
-}
-
-svg {
-	transform: rotate(270deg);
-}
-
-.devpost {
-	width: 225px;
-}
-
-#ribbon {
-	position: fixed;
-    width: 200px;
-    height: 300px;
-    top: auto;
-    bottom: -167px;
-    left: -135px;
-    background: #003E54;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    z-index: 99;
-}
-

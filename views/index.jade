@@ -1,17 +1,26 @@
 doctype html
 html
   head
-    title STROIT
+    title stroit.life | find the safest way home
     meta(name='viewport', content='initial-scale=1.0, user-scalable=no')
+    meta(property='og:url', content='https://stroit.life')
+    meta(property='og:type', content='article')
+    meta(property='og:title', content='stroit.life | find the safest way home')
+    meta(property='og:description', content='We provide safest and fastest directions in Detroit.')
+    meta(property='og:image', content='stoit.life' + require("../public/images/meta-img.png"))
     meta(charset='utf-8')
     script(src='https://code.jquery.com/jquery-3.1.1.min.js', integrity='sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=', crossorigin='anonymous')
   body
     header
       .logo.col-md-3
-        h1(title="sex")#logo STROIT
+        img#logo(src=require("../public/images/logo.png"), href="#")
         span.peace| stay safe in Detroit
       .search-bar
         input#origin-input.controls(type='text', onfocus="this.placeholder=''", onblur="this.placeholder='Enter a destination location'", placeholder='Enter an origin location')
         input#destination-input.controls(type='text', onfocus="this.placeholder=''",  onblur="this.placeholder='Enter a destination location'", placeholder='Enter a destination location')
       .clearfix
-    #map
+    #wrapper
+      #map
+      a(href="https://devpost.com/software/stroit-life" target="_blank")
+        #ribbon.sticky
+          img.devpost(src="http://i.imgur.com/vKjjRqt.png")

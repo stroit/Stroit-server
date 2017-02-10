@@ -1,3 +1,20 @@
+const rp = require('request-promise');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://yeom.me/stroit');
+
+var Schema = mongoose.Schema;
+var mapInfo = new Schema({
+  lat: Number,
+  lng: Number,
+  address: String,
+  offensedescription: String,
+  published_date: { type: Date, default: Date.now }
+});
+
+var Map = mongoose.model('map', mapInfo);
+
+
 let option = {
   uri: 'https://data.detroitmi.gov/resource/i9ph-uyrp.json?',
   qs: {
@@ -24,4 +41,3 @@ rp(option)
   .catch(function(err) {
     console.error("띠용", err);
   })
-

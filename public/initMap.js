@@ -34,11 +34,9 @@ function initMap() {
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(originInput);
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(destInput);
 
-        var iconBase = 'http://i.imgur.com/yeMqffk.png';
-
         var marker;
         var image = {
-          url: 'http://i.imgur.com/5hFICRf.png',
+          url: require('./images/icon.png'),
           scaledSize: new google.maps.Size(24, 24),
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(0, 0)
@@ -52,33 +50,7 @@ function initMap() {
               icon: image
             });
           }
-        })
-
-
-
-
-        /*
-
-        var gradient = [
-            'rgba(255, 0, 0, 0)',
-            'rgba(255, 0, 0, 1)',
-            'rgba(255, 0, 128, 1)',
-            'rgba(255, 0, 100, 1)',
-            'rgba(255, 0, 50, 1)',
-            'rgba(255, 0, 0, 1)',
-            'rgba(223, 0, 0, 1)',
-            'rgba(200, 0, 0, 1)',
-            'rgba(200, 0, 0, 1)',
-            'rgba(210, 0, 0, 1)',
-            'rgba(220, 0, 0, 1)',
-            'rgba(230, 0, 0, 1)',
-            'rgba(240, 0, 0, 1)',
-            'rgba(255, 0, 0, 1)'
-        ]
-        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-        heatmap.set('radius', heatmap.get('radius') ? null : 5);
-        heatmap.set('opacity', heatmap.get('opacity') ? null : 0.8);
-*/
+        }) 
         displayPath = [];
 
         var directionsService = new google.maps.DirectionsService;
@@ -174,8 +146,8 @@ function isGeometryValid(place) {
 function appendPanel() {
     if (!$('#panel').length) {
         $('header').after($("<div id='panel'></div>"));
-        $('#panel').animateCss('fadeIn');
-        $('#map').css('height', '100%').css('height', '-=165px');
+//        $('#panel').animateCss('fadeIn');
+        $('#wrapper').css('height', '100%').css('height', '-=165px');
       }
 }
 
@@ -195,6 +167,8 @@ function appendDirections(placeId) {
 
             var via = [];
             var dur = [];
+            
+            //Should append element using pure.js
             for (var i = 0; i < routeInfo.routes.length; i++) {
                 via.push(routeInfo.routes[i].summary);
                 dur.push(routeInfo.routes[i].legs[0].duration.text);
@@ -210,7 +184,7 @@ function appendDirections(placeId) {
             }
 
             $('.way-wrapper').each(function(i) {
-                $(this).append($('<div class="danger"><img src="'+ require('./alarm.png') + '"class="icon" title="danger"/><span class="dangerRate" title="This shows how dangerous the route is">' + danger[i] + '%</span></div>'));
+                $(this).append($('<div class="danger"><img src="'+ require('./images/alarm.png') + '"class="icon" title="danger"/><span class="dangerRate" title="This shows how dangerous the route is">' + danger[i] + '%</span></div>'));
                 var num = $('.dangerRate').text().replace("%", "");
                 if (parseInt(num) >= 70) {
                     if (i == 0) $('.dangerRate').first().addClass('red');
