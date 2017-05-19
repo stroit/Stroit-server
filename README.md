@@ -6,7 +6,7 @@
 </h1>
 
 <p style="text-algin: center;">
-  <img src="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/471/938/datas/gallery.jpg"/>
+  <img src="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/471/938/datas/gallery.jpg" />
 </p>
 
 
